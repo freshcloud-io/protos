@@ -1,4 +1,4 @@
-module github.com/freshcloud-io/protos/go/freshcloud
+module github.com/freshcloud-io/protos/freshcloud
 
 go 1.20
 
