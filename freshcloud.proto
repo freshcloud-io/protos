@@ -1,0 +1,190 @@
+syntax = "proto3";
+
+package freshcloud;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/freshcloud-io/protos/go/freshcloud";
+
+message App {
+    string id = 1;
+    string name = 2;
+    string environment = 3;
+    bool running = 4;
+    google.protobuf.Timestamp createdAt = 5;
+}
+
+message CreateAppRequest {
+    string name = 1;
+}
+message CreateAppResponse {
+    App app = 1;
+}
+
+message StopAppRequest { 
+    string id = 1;
+}
+message StopAppResponse { 
+    string id = 1;
+    string msg = 2;
+}
+
+message DeleteAppRequest {
+    string id = 1;
+}
+message DeleteAppResponse { 
+    string id = 1;
+    string msg = 2;
+}
+
+message LogsAppRequest { 
+    string id = 1;
+}
+message LogsAppResponse { 
+    string log = 1;
+}
+
+message ListAppsResponse {
+    repeated App apps = 1;
+}
+
+message PingResponse {
+  string msg = 1;
+}
+
+// Informatio to build the application in the backend
+message Image {
+    repeated string commands = 1;
+}
+message ImageRegistry {
+    string url = 1;
+	string repository = 2;
+}
+message Resources {
+    int64 cpu = 1;
+	int64 memory = 2;
+	int64 disk = 3;
+}
+
+message BuildInfo {
+    Image image = 1;
+    ImageRegistry registry = 2;
+    Resources resources = 3;
+}
+
+message DeployAppRequest {
+    string blobKey = 1;
+    string id = 2;
+    string name = 3;
+    BuildInfo build = 4;
+}
+message DeployAppResponse {
+    string url = 1;
+    string status = 2;
+}
+
+message CronExecuteRequest {
+    string jobName = 1;
+    map<string, string> config = 2;
+    uint32 statusServer = 3;
+}
+  
+message CronExecuteResponse {
+    bytes output = 1;
+    string error = 2;
+}
+
+// Dictionary messages
+message GetValueDictionaryRequest {
+    string key = 1;
+}
+message GetValueDictionaryResponse {
+    bytes value = 1;
+    string error = 2;
+}
+message ExistsValueDictionaryRequest {
+    string key = 1;
+}
+message ExistsValueDictionaryResponse {    
+    bool exists = 1;
+}
+message PutValueDictionaryRequest {
+    string key = 1;
+    bytes value = 2;
+}
+message PutValueDictionaryResponse {    
+    string error = 1;
+}
+message DeleteValueDictionaryRequest {
+    string key = 1;    
+}
+message DeleteValueDictionaryResponse {    
+    string error = 1;
+}
+message PopValueDictionaryRequest {
+    string key = 1;
+}
+message PopValueDictionaryResponse {
+    bytes value = 1; 
+    string error = 2;
+}
+message LengthDictionaryRequest {
+    string key = 1;
+}
+message LengthDictionaryResponse {
+    int32 value = 1; 
+    string error = 2;
+}
+
+// Queue messages
+message ProduceValueQueueRequest {
+    string topic = 1;
+    bytes message = 2;
+}
+message ProduceValueQueueResponse {
+    bool ack = 1;
+    string error = 2;
+}
+message ConsumeValuesQueueRequest {
+    string topic = 1;
+}
+message ConsumeValuesQueueResponse {
+    bytes message = 1;
+}
+
+// SecretHandler messages
+message LoadSecretsFromAPIRequest {
+    string applicationId = 1;    
+}
+message LoadSecretsFromAPIResponse {
+    map<string, string> values = 1;
+}
+
+service Freshcloud {
+    // Application functions
+    rpc CreateApp(CreateAppRequest) returns (CreateAppResponse);
+    rpc StopApp(StopAppRequest) returns (StopAppResponse);
+    rpc DeleteApp(DeleteAppRequest) returns (DeleteAppResponse);
+    rpc LogsApp(LogsAppRequest) returns (stream LogsAppResponse);
+    rpc ListApps(google.protobuf.Empty) returns (ListAppsResponse);
+
+    rpc DeployApp(DeployAppRequest) returns (DeployAppResponse);
+
+    // Dictionary functions
+    rpc GetValueDictionary(GetValueDictionaryRequest) returns (GetValueDictionaryResponse);
+    rpc ExistsValueDictionary(ExistsValueDictionaryRequest) returns (ExistsValueDictionaryResponse);
+    rpc PutValueDictionary(PutValueDictionaryRequest) returns (PutValueDictionaryResponse);
+    rpc DeleteValueDictionary(DeleteValueDictionaryRequest) returns (DeleteValueDictionaryResponse);
+    rpc PopValueDictionary(PopValueDictionaryRequest) returns (PopValueDictionaryResponse);
+    rpc LengthDictionary(LengthDictionaryRequest) returns (LengthDictionaryResponse);
+
+    // Queue functions
+    rpc ProduceValueQueue(ProduceValueQueueRequest) returns (ProduceValueQueueResponse);
+    rpc ConsumeValuesQueue(ConsumeValuesQueueRequest) returns (stream ConsumeValuesQueueResponse);
+
+    // SecretHandler functions
+    rpc LoadSecretsFromAPI(LoadSecretsFromAPIRequest) returns (LoadSecretsFromAPIResponse);
+
+    rpc Ping(google.protobuf.Empty) returns (PingResponse);
+}
