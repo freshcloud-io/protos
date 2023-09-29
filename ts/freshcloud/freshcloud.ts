@@ -1,7 +1,9 @@
 /* eslint-disable */
+import { grpc } from "@improbable-eng/grpc-web";
+import { BrowserHeaders } from "browser-headers";
 import * as _m0 from "protobufjs/minimal";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { share } from "rxjs/operators";
 import { Empty } from "./google/protobuf/empty";
 import { Timestamp } from "./google/protobuf/timestamp";
 import Long = require("long");
@@ -2889,33 +2891,58 @@ export const LoadSecretsFromAPIResponse_ValuesEntry = {
 
 export interface Freshcloud {
   /** Application functions */
-  CreateApp(request: CreateAppRequest): Promise<CreateAppResponse>;
-  StopApp(request: StopAppRequest): Promise<StopAppResponse>;
-  DeleteApp(request: DeleteAppRequest): Promise<DeleteAppResponse>;
-  LogsApp(request: LogsAppRequest): Observable<LogsAppResponse>;
-  ListApps(request: Empty): Promise<ListAppsResponse>;
-  DeployApp(request: DeployAppRequest): Promise<DeployAppResponse>;
+  CreateApp(request: DeepPartial<CreateAppRequest>, metadata?: grpc.Metadata): Promise<CreateAppResponse>;
+  StopApp(request: DeepPartial<StopAppRequest>, metadata?: grpc.Metadata): Promise<StopAppResponse>;
+  DeleteApp(request: DeepPartial<DeleteAppRequest>, metadata?: grpc.Metadata): Promise<DeleteAppResponse>;
+  LogsApp(request: DeepPartial<LogsAppRequest>, metadata?: grpc.Metadata): Observable<LogsAppResponse>;
+  ListApps(request: DeepPartial<Empty>, metadata?: grpc.Metadata): Promise<ListAppsResponse>;
+  DeployApp(request: DeepPartial<DeployAppRequest>, metadata?: grpc.Metadata): Promise<DeployAppResponse>;
   /** Dictionary functions */
-  GetValueDictionary(request: GetValueDictionaryRequest): Promise<GetValueDictionaryResponse>;
-  ExistsValueDictionary(request: ExistsValueDictionaryRequest): Promise<ExistsValueDictionaryResponse>;
-  PutValueDictionary(request: PutValueDictionaryRequest): Promise<PutValueDictionaryResponse>;
-  DeleteValueDictionary(request: DeleteValueDictionaryRequest): Promise<DeleteValueDictionaryResponse>;
-  PopValueDictionary(request: PopValueDictionaryRequest): Promise<PopValueDictionaryResponse>;
-  LengthDictionary(request: LengthDictionaryRequest): Promise<LengthDictionaryResponse>;
+  GetValueDictionary(
+    request: DeepPartial<GetValueDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<GetValueDictionaryResponse>;
+  ExistsValueDictionary(
+    request: DeepPartial<ExistsValueDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<ExistsValueDictionaryResponse>;
+  PutValueDictionary(
+    request: DeepPartial<PutValueDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<PutValueDictionaryResponse>;
+  DeleteValueDictionary(
+    request: DeepPartial<DeleteValueDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<DeleteValueDictionaryResponse>;
+  PopValueDictionary(
+    request: DeepPartial<PopValueDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<PopValueDictionaryResponse>;
+  LengthDictionary(
+    request: DeepPartial<LengthDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<LengthDictionaryResponse>;
   /** Queue functions */
-  ProduceValueQueue(request: ProduceValueQueueRequest): Promise<ProduceValueQueueResponse>;
-  ConsumeValuesQueue(request: ConsumeValuesQueueRequest): Observable<ConsumeValuesQueueResponse>;
+  ProduceValueQueue(
+    request: DeepPartial<ProduceValueQueueRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<ProduceValueQueueResponse>;
+  ConsumeValuesQueue(
+    request: DeepPartial<ConsumeValuesQueueRequest>,
+    metadata?: grpc.Metadata,
+  ): Observable<ConsumeValuesQueueResponse>;
   /** SecretHandler functions */
-  LoadSecretsFromAPI(request: LoadSecretsFromAPIRequest): Promise<LoadSecretsFromAPIResponse>;
-  Ping(request: Empty): Promise<PingResponse>;
+  LoadSecretsFromAPI(
+    request: DeepPartial<LoadSecretsFromAPIRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<LoadSecretsFromAPIResponse>;
+  Ping(request: DeepPartial<Empty>, metadata?: grpc.Metadata): Promise<PingResponse>;
 }
 
-export const FreshcloudServiceName = "freshcloud.Freshcloud";
 export class FreshcloudClientImpl implements Freshcloud {
   private readonly rpc: Rpc;
-  private readonly service: string;
-  constructor(rpc: Rpc, opts?: { service?: string }) {
-    this.service = opts?.service || FreshcloudServiceName;
+
+  constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.CreateApp = this.CreateApp.bind(this);
     this.StopApp = this.StopApp.bind(this);
@@ -2934,108 +2961,590 @@ export class FreshcloudClientImpl implements Freshcloud {
     this.LoadSecretsFromAPI = this.LoadSecretsFromAPI.bind(this);
     this.Ping = this.Ping.bind(this);
   }
-  CreateApp(request: CreateAppRequest): Promise<CreateAppResponse> {
-    const data = CreateAppRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "CreateApp", data);
-    return promise.then((data) => CreateAppResponse.decode(_m0.Reader.create(data)));
+
+  CreateApp(request: DeepPartial<CreateAppRequest>, metadata?: grpc.Metadata): Promise<CreateAppResponse> {
+    return this.rpc.unary(FreshcloudCreateAppDesc, CreateAppRequest.fromPartial(request), metadata);
   }
 
-  StopApp(request: StopAppRequest): Promise<StopAppResponse> {
-    const data = StopAppRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "StopApp", data);
-    return promise.then((data) => StopAppResponse.decode(_m0.Reader.create(data)));
+  StopApp(request: DeepPartial<StopAppRequest>, metadata?: grpc.Metadata): Promise<StopAppResponse> {
+    return this.rpc.unary(FreshcloudStopAppDesc, StopAppRequest.fromPartial(request), metadata);
   }
 
-  DeleteApp(request: DeleteAppRequest): Promise<DeleteAppResponse> {
-    const data = DeleteAppRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "DeleteApp", data);
-    return promise.then((data) => DeleteAppResponse.decode(_m0.Reader.create(data)));
+  DeleteApp(request: DeepPartial<DeleteAppRequest>, metadata?: grpc.Metadata): Promise<DeleteAppResponse> {
+    return this.rpc.unary(FreshcloudDeleteAppDesc, DeleteAppRequest.fromPartial(request), metadata);
   }
 
-  LogsApp(request: LogsAppRequest): Observable<LogsAppResponse> {
-    const data = LogsAppRequest.encode(request).finish();
-    const result = this.rpc.serverStreamingRequest(this.service, "LogsApp", data);
-    return result.pipe(map((data) => LogsAppResponse.decode(_m0.Reader.create(data))));
+  LogsApp(request: DeepPartial<LogsAppRequest>, metadata?: grpc.Metadata): Observable<LogsAppResponse> {
+    return this.rpc.invoke(FreshcloudLogsAppDesc, LogsAppRequest.fromPartial(request), metadata);
   }
 
-  ListApps(request: Empty): Promise<ListAppsResponse> {
-    const data = Empty.encode(request).finish();
-    const promise = this.rpc.request(this.service, "ListApps", data);
-    return promise.then((data) => ListAppsResponse.decode(_m0.Reader.create(data)));
+  ListApps(request: DeepPartial<Empty>, metadata?: grpc.Metadata): Promise<ListAppsResponse> {
+    return this.rpc.unary(FreshcloudListAppsDesc, Empty.fromPartial(request), metadata);
   }
 
-  DeployApp(request: DeployAppRequest): Promise<DeployAppResponse> {
-    const data = DeployAppRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "DeployApp", data);
-    return promise.then((data) => DeployAppResponse.decode(_m0.Reader.create(data)));
+  DeployApp(request: DeepPartial<DeployAppRequest>, metadata?: grpc.Metadata): Promise<DeployAppResponse> {
+    return this.rpc.unary(FreshcloudDeployAppDesc, DeployAppRequest.fromPartial(request), metadata);
   }
 
-  GetValueDictionary(request: GetValueDictionaryRequest): Promise<GetValueDictionaryResponse> {
-    const data = GetValueDictionaryRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "GetValueDictionary", data);
-    return promise.then((data) => GetValueDictionaryResponse.decode(_m0.Reader.create(data)));
+  GetValueDictionary(
+    request: DeepPartial<GetValueDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<GetValueDictionaryResponse> {
+    return this.rpc.unary(FreshcloudGetValueDictionaryDesc, GetValueDictionaryRequest.fromPartial(request), metadata);
   }
 
-  ExistsValueDictionary(request: ExistsValueDictionaryRequest): Promise<ExistsValueDictionaryResponse> {
-    const data = ExistsValueDictionaryRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "ExistsValueDictionary", data);
-    return promise.then((data) => ExistsValueDictionaryResponse.decode(_m0.Reader.create(data)));
+  ExistsValueDictionary(
+    request: DeepPartial<ExistsValueDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<ExistsValueDictionaryResponse> {
+    return this.rpc.unary(
+      FreshcloudExistsValueDictionaryDesc,
+      ExistsValueDictionaryRequest.fromPartial(request),
+      metadata,
+    );
   }
 
-  PutValueDictionary(request: PutValueDictionaryRequest): Promise<PutValueDictionaryResponse> {
-    const data = PutValueDictionaryRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "PutValueDictionary", data);
-    return promise.then((data) => PutValueDictionaryResponse.decode(_m0.Reader.create(data)));
+  PutValueDictionary(
+    request: DeepPartial<PutValueDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<PutValueDictionaryResponse> {
+    return this.rpc.unary(FreshcloudPutValueDictionaryDesc, PutValueDictionaryRequest.fromPartial(request), metadata);
   }
 
-  DeleteValueDictionary(request: DeleteValueDictionaryRequest): Promise<DeleteValueDictionaryResponse> {
-    const data = DeleteValueDictionaryRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "DeleteValueDictionary", data);
-    return promise.then((data) => DeleteValueDictionaryResponse.decode(_m0.Reader.create(data)));
+  DeleteValueDictionary(
+    request: DeepPartial<DeleteValueDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<DeleteValueDictionaryResponse> {
+    return this.rpc.unary(
+      FreshcloudDeleteValueDictionaryDesc,
+      DeleteValueDictionaryRequest.fromPartial(request),
+      metadata,
+    );
   }
 
-  PopValueDictionary(request: PopValueDictionaryRequest): Promise<PopValueDictionaryResponse> {
-    const data = PopValueDictionaryRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "PopValueDictionary", data);
-    return promise.then((data) => PopValueDictionaryResponse.decode(_m0.Reader.create(data)));
+  PopValueDictionary(
+    request: DeepPartial<PopValueDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<PopValueDictionaryResponse> {
+    return this.rpc.unary(FreshcloudPopValueDictionaryDesc, PopValueDictionaryRequest.fromPartial(request), metadata);
   }
 
-  LengthDictionary(request: LengthDictionaryRequest): Promise<LengthDictionaryResponse> {
-    const data = LengthDictionaryRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "LengthDictionary", data);
-    return promise.then((data) => LengthDictionaryResponse.decode(_m0.Reader.create(data)));
+  LengthDictionary(
+    request: DeepPartial<LengthDictionaryRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<LengthDictionaryResponse> {
+    return this.rpc.unary(FreshcloudLengthDictionaryDesc, LengthDictionaryRequest.fromPartial(request), metadata);
   }
 
-  ProduceValueQueue(request: ProduceValueQueueRequest): Promise<ProduceValueQueueResponse> {
-    const data = ProduceValueQueueRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "ProduceValueQueue", data);
-    return promise.then((data) => ProduceValueQueueResponse.decode(_m0.Reader.create(data)));
+  ProduceValueQueue(
+    request: DeepPartial<ProduceValueQueueRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<ProduceValueQueueResponse> {
+    return this.rpc.unary(FreshcloudProduceValueQueueDesc, ProduceValueQueueRequest.fromPartial(request), metadata);
   }
 
-  ConsumeValuesQueue(request: ConsumeValuesQueueRequest): Observable<ConsumeValuesQueueResponse> {
-    const data = ConsumeValuesQueueRequest.encode(request).finish();
-    const result = this.rpc.serverStreamingRequest(this.service, "ConsumeValuesQueue", data);
-    return result.pipe(map((data) => ConsumeValuesQueueResponse.decode(_m0.Reader.create(data))));
+  ConsumeValuesQueue(
+    request: DeepPartial<ConsumeValuesQueueRequest>,
+    metadata?: grpc.Metadata,
+  ): Observable<ConsumeValuesQueueResponse> {
+    return this.rpc.invoke(FreshcloudConsumeValuesQueueDesc, ConsumeValuesQueueRequest.fromPartial(request), metadata);
   }
 
-  LoadSecretsFromAPI(request: LoadSecretsFromAPIRequest): Promise<LoadSecretsFromAPIResponse> {
-    const data = LoadSecretsFromAPIRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "LoadSecretsFromAPI", data);
-    return promise.then((data) => LoadSecretsFromAPIResponse.decode(_m0.Reader.create(data)));
+  LoadSecretsFromAPI(
+    request: DeepPartial<LoadSecretsFromAPIRequest>,
+    metadata?: grpc.Metadata,
+  ): Promise<LoadSecretsFromAPIResponse> {
+    return this.rpc.unary(FreshcloudLoadSecretsFromAPIDesc, LoadSecretsFromAPIRequest.fromPartial(request), metadata);
   }
 
-  Ping(request: Empty): Promise<PingResponse> {
-    const data = Empty.encode(request).finish();
-    const promise = this.rpc.request(this.service, "Ping", data);
-    return promise.then((data) => PingResponse.decode(_m0.Reader.create(data)));
+  Ping(request: DeepPartial<Empty>, metadata?: grpc.Metadata): Promise<PingResponse> {
+    return this.rpc.unary(FreshcloudPingDesc, Empty.fromPartial(request), metadata);
   }
 }
 
+export const FreshcloudDesc = { serviceName: "freshcloud.Freshcloud" };
+
+export const FreshcloudCreateAppDesc: UnaryMethodDefinitionish = {
+  methodName: "CreateApp",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return CreateAppRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = CreateAppResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudStopAppDesc: UnaryMethodDefinitionish = {
+  methodName: "StopApp",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return StopAppRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = StopAppResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudDeleteAppDesc: UnaryMethodDefinitionish = {
+  methodName: "DeleteApp",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return DeleteAppRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = DeleteAppResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudLogsAppDesc: UnaryMethodDefinitionish = {
+  methodName: "LogsApp",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: true,
+  requestType: {
+    serializeBinary() {
+      return LogsAppRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = LogsAppResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudListAppsDesc: UnaryMethodDefinitionish = {
+  methodName: "ListApps",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return Empty.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = ListAppsResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudDeployAppDesc: UnaryMethodDefinitionish = {
+  methodName: "DeployApp",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return DeployAppRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = DeployAppResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudGetValueDictionaryDesc: UnaryMethodDefinitionish = {
+  methodName: "GetValueDictionary",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return GetValueDictionaryRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = GetValueDictionaryResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudExistsValueDictionaryDesc: UnaryMethodDefinitionish = {
+  methodName: "ExistsValueDictionary",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return ExistsValueDictionaryRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = ExistsValueDictionaryResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudPutValueDictionaryDesc: UnaryMethodDefinitionish = {
+  methodName: "PutValueDictionary",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return PutValueDictionaryRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = PutValueDictionaryResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudDeleteValueDictionaryDesc: UnaryMethodDefinitionish = {
+  methodName: "DeleteValueDictionary",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return DeleteValueDictionaryRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = DeleteValueDictionaryResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudPopValueDictionaryDesc: UnaryMethodDefinitionish = {
+  methodName: "PopValueDictionary",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return PopValueDictionaryRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = PopValueDictionaryResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudLengthDictionaryDesc: UnaryMethodDefinitionish = {
+  methodName: "LengthDictionary",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return LengthDictionaryRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = LengthDictionaryResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudProduceValueQueueDesc: UnaryMethodDefinitionish = {
+  methodName: "ProduceValueQueue",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return ProduceValueQueueRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = ProduceValueQueueResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudConsumeValuesQueueDesc: UnaryMethodDefinitionish = {
+  methodName: "ConsumeValuesQueue",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: true,
+  requestType: {
+    serializeBinary() {
+      return ConsumeValuesQueueRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = ConsumeValuesQueueResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudLoadSecretsFromAPIDesc: UnaryMethodDefinitionish = {
+  methodName: "LoadSecretsFromAPI",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return LoadSecretsFromAPIRequest.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = LoadSecretsFromAPIResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+export const FreshcloudPingDesc: UnaryMethodDefinitionish = {
+  methodName: "Ping",
+  service: FreshcloudDesc,
+  requestStream: false,
+  responseStream: false,
+  requestType: {
+    serializeBinary() {
+      return Empty.encode(this).finish();
+    },
+  } as any,
+  responseType: {
+    deserializeBinary(data: Uint8Array) {
+      const value = PingResponse.decode(data);
+      return {
+        ...value,
+        toObject() {
+          return value;
+        },
+      };
+    },
+  } as any,
+};
+
+interface UnaryMethodDefinitionishR extends grpc.UnaryMethodDefinition<any, any> {
+  requestStream: any;
+  responseStream: any;
+}
+
+type UnaryMethodDefinitionish = UnaryMethodDefinitionishR;
+
 interface Rpc {
-  request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
-  clientStreamingRequest(service: string, method: string, data: Observable<Uint8Array>): Promise<Uint8Array>;
-  serverStreamingRequest(service: string, method: string, data: Uint8Array): Observable<Uint8Array>;
-  bidirectionalStreamingRequest(service: string, method: string, data: Observable<Uint8Array>): Observable<Uint8Array>;
+  unary<T extends UnaryMethodDefinitionish>(
+    methodDesc: T,
+    request: any,
+    metadata: grpc.Metadata | undefined,
+  ): Promise<any>;
+  invoke<T extends UnaryMethodDefinitionish>(
+    methodDesc: T,
+    request: any,
+    metadata: grpc.Metadata | undefined,
+  ): Observable<any>;
+}
+
+export class GrpcWebImpl {
+  private host: string;
+  private options: {
+    transport?: grpc.TransportFactory;
+    streamingTransport?: grpc.TransportFactory;
+    debug?: boolean;
+    metadata?: grpc.Metadata;
+    upStreamRetryCodes?: number[];
+  };
+
+  constructor(
+    host: string,
+    options: {
+      transport?: grpc.TransportFactory;
+      streamingTransport?: grpc.TransportFactory;
+      debug?: boolean;
+      metadata?: grpc.Metadata;
+      upStreamRetryCodes?: number[];
+    },
+  ) {
+    this.host = host;
+    this.options = options;
+  }
+
+  unary<T extends UnaryMethodDefinitionish>(
+    methodDesc: T,
+    _request: any,
+    metadata: grpc.Metadata | undefined,
+  ): Promise<any> {
+    const request = { ..._request, ...methodDesc.requestType };
+    const maybeCombinedMetadata = metadata && this.options.metadata
+      ? new BrowserHeaders({ ...this.options?.metadata.headersMap, ...metadata?.headersMap })
+      : metadata ?? this.options.metadata;
+    return new Promise((resolve, reject) => {
+      grpc.unary(methodDesc, {
+        request,
+        host: this.host,
+        metadata: maybeCombinedMetadata ?? {},
+        ...(this.options.transport !== undefined ? { transport: this.options.transport } : {}),
+        debug: this.options.debug ?? false,
+        onEnd: function (response) {
+          if (response.status === grpc.Code.OK) {
+            resolve(response.message!.toObject());
+          } else {
+            const err = new GrpcWebError(response.statusMessage, response.status, response.trailers);
+            reject(err);
+          }
+        },
+      });
+    });
+  }
+
+  invoke<T extends UnaryMethodDefinitionish>(
+    methodDesc: T,
+    _request: any,
+    metadata: grpc.Metadata | undefined,
+  ): Observable<any> {
+    const upStreamCodes = this.options.upStreamRetryCodes ?? [];
+    const DEFAULT_TIMEOUT_TIME: number = 3_000;
+    const request = { ..._request, ...methodDesc.requestType };
+    const transport = this.options.streamingTransport ?? this.options.transport;
+    const maybeCombinedMetadata = metadata && this.options.metadata
+      ? new BrowserHeaders({ ...this.options?.metadata.headersMap, ...metadata?.headersMap })
+      : metadata ?? this.options.metadata;
+    return new Observable((observer) => {
+      const upStream = () => {
+        const client = grpc.invoke(methodDesc, {
+          host: this.host,
+          request,
+          ...(transport !== undefined ? { transport } : {}),
+          metadata: maybeCombinedMetadata ?? {},
+          debug: this.options.debug ?? false,
+          onMessage: (next) => observer.next(next),
+          onEnd: (code: grpc.Code, message: string, trailers: grpc.Metadata) => {
+            if (code === 0) {
+              observer.complete();
+            } else if (upStreamCodes.includes(code)) {
+              setTimeout(upStream, DEFAULT_TIMEOUT_TIME);
+            } else {
+              const err = new Error(message) as any;
+              err.code = code;
+              err.metadata = trailers;
+              observer.error(err);
+            }
+          },
+        });
+        observer.add(() => {
+          return client.close();
+        });
+      };
+      upStream();
+    }).pipe(share());
+  }
 }
 
 declare const self: any | undefined;
@@ -3133,4 +3642,10 @@ function isObject(value: any): boolean {
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
+}
+
+export class GrpcWebError extends tsProtoGlobalThis.Error {
+  constructor(message: string, public code: grpc.Code, public metadata: grpc.Metadata) {
+    super(message);
+  }
 }
