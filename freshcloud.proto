@@ -164,11 +164,28 @@ message LoadSecretsFromAPIResponse {
 
 service Freshcloud {
     // Application functions
-    rpc CreateApp(CreateAppRequest) returns (CreateAppResponse);
-    rpc StopApp(StopAppRequest) returns (StopAppResponse);
+    rpc CreateApp(CreateAppRequest) returns (CreateAppResponse) {
+        option (google.api.http) = {
+            post: "/applications"
+        };
+    }
+
+    rpc StopApp(StopAppRequest) returns (StopAppResponse) {
+        option (google.api.http) = {
+            put: "/applications/{id}"
+            body: "*"
+        };
+    }
+    
+    
     rpc DeleteApp(DeleteAppRequest) returns (DeleteAppResponse);
+    
+    
     rpc LogsApp(LogsAppRequest) returns (stream LogsAppResponse);
+    
+
     rpc ListApps(google.protobuf.Empty) returns (ListAppsResponse);
+
 
     rpc DeployApp(DeployAppRequest) returns (DeployAppResponse);
 
@@ -189,8 +206,7 @@ service Freshcloud {
 
     rpc Ping(google.protobuf.Empty) returns (PingResponse) {
         option (google.api.http) = {
-            post: "/ping"
-            body: "*"
+            get: "/ping"            
           };
     }
 }
