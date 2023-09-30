@@ -1,5 +1,5 @@
 {
-  "name": "protos",
+  "name": "freshcloudpb",
   "version": "v0.2.0",
   "dependencies": {
     "ts-proto": "^1.158.0"
