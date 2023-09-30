@@ -4,6 +4,7 @@ package freshcloud;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
 
 option go_package = "github.com/freshcloud-io/protos/go/freshcloud";
 
@@ -186,5 +187,10 @@ service Freshcloud {
     // SecretHandler functions
     rpc LoadSecretsFromAPI(LoadSecretsFromAPIRequest) returns (LoadSecretsFromAPIResponse);
 
-    rpc Ping(google.protobuf.Empty) returns (PingResponse);
+    rpc Ping(google.protobuf.Empty) returns (PingResponse) {
+        option (google.api.http) = {
+            post: "/ping"
+            body: "*"
+          };
+    }
 }
